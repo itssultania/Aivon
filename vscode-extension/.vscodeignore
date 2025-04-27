@@ -33,4 +33,4 @@ scripts/**
 **/.idea/**
 
 # Ensure icon stays included
-!resources/icon.svg 
+!resources/icon.png 

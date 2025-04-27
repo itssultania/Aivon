@@ -27,7 +27,7 @@
     "code-generation",
     "documentation"
   ],
-  "icon": "./resources/icon.svg",
+  "icon": "./resources/icon.png",
   "galleryBanner": {
     "color": "#1a1a1a",
     "theme": "dark"
@@ -39,7 +39,7 @@
         {
           "id": "ai-assistant",
           "title": "AI Assistant",
-          "icon": "./resources/icon.svg"
+          "icon": "./resources/icon.png"
         }
       ]
     },
