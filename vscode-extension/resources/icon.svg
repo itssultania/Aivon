@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-  <rect width="24" height="24" fill="none"/>
-  <!-- Clear AI text with solid fills -->
-  <path d="M6.5 18L10 6L13.5 18H11.5L10.75 15.5H9.25L8.5 18H6.5ZM10 10L9.4 13H10.6L10 10Z" fill="#ffffff"/>
-  <path d="M15 6H19V8H18V16H19V18H15V16H16V8H15V6Z" fill="#ffffff"/>
-</svg> 
