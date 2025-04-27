@@ -1,0 +1,8 @@
+# Core dependencies
+requests>=2.25.0
+python-dotenv>=0.15.0
+google-generativeai>=0.8.0
+
+# Optional dependencies
+colorama>=0.4.4  # For colored terminal output
+keyboard>=0.13.5  # For interactive features 

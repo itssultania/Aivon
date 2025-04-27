@@ -1,0 +1,36 @@
+.vscode/**
+.vscode-test/**
+src/**
+node_modules/**
+build.js
+media/**/*.js 
+!media/*.min.js
+
+# Keep docs but not developer notes
+**/CONTRIBUTING.md
+**/*.spec.ts
+**/*.test.ts
+.github/**
+
+# Config files not needed at runtime
+.eslintrc.json
+.eslintrc.js
+.prettierrc
+.prettierrc.js
+.editorconfig
+tsconfig.json
+package-lock.json
+yarn.lock
+.gitignore
+*.tgz
+
+# Scripts and development files
+scripts/**
+**/test/**
+**/__tests__/**
+**/docs/**
+**/.vscode/**
+**/.idea/**
+
+# Ensure icon stays included
+!resources/icon.svg 

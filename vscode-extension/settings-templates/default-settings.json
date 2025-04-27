@@ -1,0 +1,30 @@
+{
+  "geminiAssistant.maxProjectContextChars": 50000,
+  "geminiAssistant.excludePatterns": [
+    "node_modules",
+    ".git",
+    "dist",
+    "build",
+    "out",
+    "target",
+    ".vscode",
+    ".idea",
+    "__pycache__",
+    ".venv",
+    "env",
+    "*.png",
+    "*.jpg",
+    "*.jpeg",
+    "*.gif",
+    "*.svg",
+    "*.ico",
+    "*.mp4",
+    "*.mp3",
+    "*.wav",
+    "*.pdf",
+    "*.zip",
+    "*.tar",
+    "*.gz",
+    "*.rar"
+  ]
+}

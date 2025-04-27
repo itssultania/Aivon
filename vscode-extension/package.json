@@ -1,0 +1,153 @@
+{
+  "name": "ai-assistant",
+  "displayName": "AI Assistant",
+  "description": "VS Code extension that integrates with Google's Gemini API to assist developers with AI-powered code explanations, optimizations, and more",
+  "version": "0.1.0",
+  "publisher": "aiagent",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ai-assistant"
+  },
+  "bugs": {
+    "url": "https://github.com/yourusername/ai-assistant/issues"
+  },
+  "homepage": "https://github.com/yourusername/ai-assistant#readme",
+  "engines": {
+    "vscode": "^1.75.0"
+  },
+  "categories": [
+    "Other",
+    "Programming Languages",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "ai",
+    "assistant",
+    "gemini",
+    "code-generation",
+    "documentation"
+  ],
+  "icon": "./resources/icon.svg",
+  "galleryBanner": {
+    "color": "#1a1a1a",
+    "theme": "dark"
+  },
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "ai-assistant",
+          "title": "AI Assistant",
+          "icon": "./resources/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "ai-assistant": [
+        {
+          "type": "webview",
+          "id": "aiAssistant.view",
+          "name": "AI Assistant"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "aiAssistant.openView",
+        "title": "Open  View",
+        "category": "AI Assistant"
+      },
+      {
+        "command": "aiAssistant.inlineAction",
+        "title": "AI Assistant: Modify Selected Code",
+        "category": "AI Assistant"
+      },
+      {
+        "command": "aiAssistant.fixLintErrors",
+        "title": "AI Assistant: Fix Linter Errors in Current File",
+        "category": "AI Assistant"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "aiAssistant.inlineAction",
+        "key": "ctrl+alt+m",
+        "mac": "cmd+alt+m",
+        "when": "editorHasSelection"
+      }
+    ],
+    "configuration": {
+      "title": "AI Assistant",
+      "properties": {
+        "aiAssistant.maxFileSizeKB": {
+          "type": "number",
+          "default": 1000,
+          "description": "Maximum file size in KB to include in context"
+        },
+        "aiAssistant.maxProjectContextChars": {
+          "type": "number",
+          "default": 50000,
+          "description": "Maximum number of characters to include in project context"
+        },
+        "aiAssistant.excludePatterns": {
+          "type": "array",
+          "default": [
+            "node_modules",
+            ".git",
+            "dist",
+            "build",
+            "out",
+            "target",
+            ".vscode",
+            ".idea",
+            "__pycache__",
+            ".venv",
+            "env",
+            "*.png",
+            "*.jpg",
+            "*.jpeg",
+            "*.gif",
+            "*.svg",
+            "*.ico",
+            "*.mp4",
+            "*.mp3",
+            "*.wav",
+            "*.pdf",
+            "*.zip",
+            "*.tar",
+            "*.gz",
+            "*.rar"
+          ],
+          "description": "Patterns to exclude from project context"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run build-prod",
+    "compile": "node ./build.js",
+    "build": "node ./build.js",
+    "build-prod": "cross-env NODE_ENV=production node ./build.js",
+    "watch": "npm run compile -- --sourcemap",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^16.11.7",
+    "@types/vscode": "^1.60.0",
+    "@typescript-eslint/eslint-plugin": "^5.30.0",
+    "@typescript-eslint/parser": "^5.30.0",
+    "cross-env": "^7.0.3",
+    "esbuild": "^0.20.2",
+    "eslint": "^8.18.0",
+    "typescript": "^4.7.4",
+    "@vscode/vsce": "^2.21.1"
+  },
+  "dependencies": {
+    "axios": "^1.7.2"
+  },
+  "license": "MIT"
+}

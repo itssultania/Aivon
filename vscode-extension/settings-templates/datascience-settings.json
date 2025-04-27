@@ -1,0 +1,12 @@
+{
+  "geminiAssistant.maxProjectContextChars": 30000,
+  "geminiAssistant.excludePatterns": [
+    ".git",
+    "venv",
+    "__pycache__",
+    "*.csv",
+    "*.json",
+    "*.pkl",
+    "data/raw"
+  ]
+}

@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        node-version: [16.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: vscode-extension/package-lock.json
+    
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./vscode-extension
+    
+    - name: Lint
+      run: npm run lint
+      working-directory: ./vscode-extension
+    
+    - name: Build
+      run: npm run build
+      working-directory: ./vscode-extension
+    
+    - name: Package Extension
+      run: npm run package
+      working-directory: ./vscode-extension
+    
+    - name: Upload Extension Package
+      uses: actions/upload-artifact@v3
+      with:
+        name: ai-assistant-extension
+        path: vscode-extension/*.vsix
+
+  test:
+    runs-on: ${{ matrix.os }}
+    needs: build
+    
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [16.x]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+        cache-dependency-path: vscode-extension/package-lock.json
+    
+    - name: Install dependencies
+      run: npm ci
+      working-directory: ./vscode-extension
+    
+    - name: Run tests
+      run: npm test
+      working-directory: ./vscode-extension 

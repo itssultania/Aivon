@@ -1,0 +1,53 @@
+# Dependency directories
+node_modules/
+.npm/
+
+# Build output
+out/
+dist/
+*.vsix
+
+# Editor specific files
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temp files
+*.tmp
+*.bak
+*.swp
+*~.nib
+
+# Testing
+coverage/
+.nyc_output/
+
+# Secrets - avoid committing API keys!
+credentials.json
+**/secrets.json 

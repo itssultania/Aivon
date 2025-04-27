@@ -1,0 +1,782 @@
+:root {
+    --container-padding: 16px;
+    --background-color: var(--vscode-editor-background, #1e1e1e);
+    --foreground-color: var(--vscode-foreground, #dcdcdc);
+    --primary-color: var(--vscode-button-background, #007acc);
+    --secondary-color: var(--vscode-panel-background, #252526);
+    --accent-color: var(--vscode-button-hoverBackground, #005a9e);
+    --border-color: var(--vscode-panel-border, #3e3e3e);
+    --input-bg: var(--vscode-input-background, #1e1e1e);
+    --font-mono: var(--vscode-editor-font-family, 'SF Mono', Menlo, Monaco, Consolas, 'Courier New', monospace);
+    --border-radius: 4px;
+    --transition-speed: 0.2s;
+    --max-chat-width: 720px;
+    --shadow-sm: 0 1px 2px rgba(0,0,0,0.1);
+    --shadow-lg: 0 2px 8px rgba(0,0,0,0.2);
+    --message-spacing: 8px;
+    --message-indent: 0px;
+    --user-message-color: rgba(0, 122, 204, 0.08);
+    --assistant-message-color: var(--secondary-color);
+    --user-accent: var(--primary-color);
+    --assistant-accent: var(--primary-color);
+    --subtle-text-color: rgba(220, 220, 220, 0.6);
+}
+  
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.3) rgba(0, 0, 0, 0.2);
+}
+  
+body, html {
+    height: 100vh;
+    width: 100%;
+    background: var(--background-color);
+    color: var(--foreground-color);
+    font-family: var(--vscode-font-family, 'Inter', 'Segoe UI', sans-serif);
+    font-size: 14px;
+    overflow: hidden;
+    line-height: 1.5;
+}
+  
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    max-height: 100vh;
+    padding: 8px;
+    overflow: hidden;
+    box-sizing: border-box;
+    position: relative;
+}
+  
+#assistantContainer {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.chat-header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 4px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.header-controls {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-button {
+    background: transparent;
+    border: none;
+    color: var(--foreground-color);
+    opacity: 0.7;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.icon-button:hover {
+    opacity: 1;
+    background: rgba(255, 255, 255, 0.05);
+}
+  
+.action-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 6px 0;
+    flex-wrap: wrap;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border-color);
+    min-height: 40px;
+}
+  
+.action-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+  
+.action-button {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--foreground-color);
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: var(--border-radius);
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.8;
+}
+  
+.action-button:hover {
+    background: var(--accent-color);
+    color: #fff;
+    border-color: var(--accent-color);
+    transform: translateY(-1px);
+    opacity: 1;
+}
+
+.action-button:focus {
+    outline: 1px solid var(--primary-color);
+    outline-offset: 1px;
+}
+  
+.context-toggle {
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    gap: 6px;
+    opacity: 0.8;
+}
+
+.toggle-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: opacity var(--transition-speed);
+}
+
+.toggle-label:hover {
+    opacity: 1;
+}
+
+.toggle-text {
+    user-select: none;
+}
+  
+/* Scrollable conversation container with minimalist design */
+.conversation-wrapper {
+    flex: 1;
+    position: relative;
+    width: 100%;
+    max-width: var(--max-chat-width);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-radius: 10px;
+    min-height: 300px;
+    border: 1px solid var(--border-color);
+    margin: 0 auto;
+    height: calc(100vh - 180px);
+    background: var(--background-color);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+}
+
+.conversation-wrapper:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+/* Elegant scrollbar for minimalist design */
+#conversationContainer {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    position: relative;
+    padding: 16px;
+    display: block;
+    background: transparent;
+    scrollbar-gutter: stable;
+}
+
+/* Interactive hover state for scrollbar */
+#conversationContainer:hover::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 150, 200, 0.5);
+}
+
+/* Aesthetic, ultra-modern scrollbar styling */
+#conversationContainer::-webkit-scrollbar {
+    width: 5px;
+    background-color: transparent;
+}
+
+#conversationContainer::-webkit-scrollbar-thumb {
+    background-color: rgba(100, 150, 200, 0.35);
+    border-radius: 50px;
+    border: none;
+    min-height: 40px;
+    transition: all 0.3s ease;
+    background-clip: padding-box;
+}
+
+#conversationContainer::-webkit-scrollbar-thumb:hover {
+    background-color: rgba(100, 150, 200, 0.7);
+    width: 6px;
+}
+
+#conversationContainer::-webkit-scrollbar-track {
+    background-color: transparent;
+    margin: 6px 0;
+    border-radius: 50px;
+}
+
+/* Firefox scrollbar */
+#conversationContainer {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(100, 150, 200, 0.35) transparent;
+}
+
+/* Ensure messages display properly */
+.message {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 16px;
+    clear: both;
+    display: block;
+    word-break: break-word;
+}
+
+/* Modern, minimalist message content */
+.message-content {
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 14px;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    padding: 14px 18px;
+    margin-bottom: 4px;
+    background: rgba(50, 50, 50, 0.02);
+    border-left: 2px solid var(--border-color);
+    border-radius: 0 8px 8px 0;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.02);
+}
+
+.message-content:hover {
+    background: rgba(50, 50, 50, 0.03);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.03);
+}
+
+/* Message styling for different types */
+.user-message .message-content {
+    background: rgba(0, 122, 204, 0.04);
+    border-left: 2px solid var(--user-accent);
+}
+
+.user-message .message-content:hover {
+    background: rgba(0, 122, 204, 0.06);
+}
+
+.assistant-message .message-content {
+    background: rgba(50, 50, 50, 0.015);
+    border-left: 2px solid var(--assistant-accent);
+}
+
+.assistant-message .message-content:hover {
+    background: rgba(50, 50, 50, 0.03);
+}
+
+.system-message .message-content {
+    background: transparent;
+    opacity: 0.8;
+    border-left: 2px solid rgba(120, 120, 120, 0.4);
+    font-size: 13px;
+    padding: 10px 14px;
+}
+
+/* Code styling for modern look */
+.message-content code {
+    font-family: var(--font-mono);
+    font-size: 0.9em;
+    padding: 2px 4px;
+    background: rgba(0, 0, 0, 0.06);
+    border-radius: 4px;
+    color: var(--foreground-color);
+}
+
+/* Visually integrate message input with VSCode design */
+.prompt-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px 0 12px 0;
+    border-top: 1px solid var(--border-color);
+    background: var(--background-color);
+    position: relative;
+    z-index: 10;
+    width: 100%;
+}
+  
+#promptInput {
+    width: 100%;
+    max-width: var(--max-chat-width);
+    min-height: 38px;
+    max-height: 150px;
+    resize: none;
+    padding: 8px 12px;
+    font-size: 14px;
+    background: var(--input-bg);
+    color: var(--foreground-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    margin-right: 6px;
+    transition: all 0.2s ease-in-out;
+}
+  
+#promptInput:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 0 1px var(--primary-color);
+}
+
+.prompt-actions {
+    display: flex;
+    align-items: center;
+}
+
+.send-button {
+    background: transparent;
+    border: none;
+    color: var(--foreground-color);
+    opacity: 0.7;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-speed);
+    cursor: pointer;
+}
+
+.send-button:hover {
+    background: var(--primary-color);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.send-icon {
+    font-size: 14px;
+    line-height: 1;
+}
+
+/* Code block styling */
+.code-block-wrapper {
+    width: 100%;
+    margin: 10px 0;
+    border-radius: 8px;
+    overflow: hidden;
+    background: rgba(0, 0, 0, 0.15);
+    border: 1px solid var(--border-color);
+    animation: fadeIn 0.4s ease-out;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    max-width: 100%;
+}
+
+.code-block-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.2);
+    padding: 6px 10px;
+    font-size: 11px;
+    color: var(--subtle-text-color);
+    border-bottom: 1px solid var(--border-color);
+    user-select: none;
+    border-radius: 8px 8px 0 0;
+}
+
+.language-name {
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 10px;
+    opacity: 0.8;
+}
+
+.code-block-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.apply-code-button,
+.preview-button,
+.copy-button {
+    background: transparent;
+    border: none;
+    color: var(--foreground-color);
+    padding: 2px 6px;
+    font-size: 11px;
+    border-radius: 2px;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all var(--transition-speed);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.apply-code-button:hover,
+.preview-button:hover,
+.copy-button:hover {
+    background: var(--primary-color);
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.apply-code-button {
+    background: rgba(0, 122, 204, 0.2);
+    opacity: 0.9;
+}
+
+.code-block-wrapper pre {
+    margin: 0;
+    padding: 12px 16px;
+    background: transparent;
+    overflow-x: auto;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    line-height: 1.5;
+    max-width: 100%;
+    white-space: pre;
+}
+
+.code-block-wrapper code {
+    font-family: var(--font-mono);
+    tab-size: 4;
+}
+
+/* Add animation classes for messages */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseHighlight {
+    0% { background-color: rgba(0, 122, 204, 0.05); }
+    50% { background-color: rgba(0, 122, 204, 0.12); }
+    100% { background-color: rgba(0, 122, 204, 0.05); }
+}
+
+.user-message, .assistant-message, .system-message {
+    animation: fadeIn 0.3s ease-out;
+}
+
+.user-message .message-content {
+    border-left: 2px solid var(--user-accent);
+    animation: pulseHighlight 3s ease-out 1;
+}
+
+/* Loading animation */
+.loading-dots {
+    display: flex;
+    align-items: center;
+    padding: 8px 12px;
+    margin: 8px auto;
+    border-radius: var(--border-radius);
+    font-size: 13px;
+    opacity: 0.8;
+    animation: fadeIn 0.3s ease-out;
+}
+
+.loading-dots .text {
+    margin-right: 10px;
+    color: var(--foreground-color);
+    opacity: 0.7;
+}
+
+.loading-dots .dots {
+    display: flex;
+    align-items: center;
+}
+
+.loading-dots .dots span {
+    width: 6px;
+    height: 6px;
+    margin: 0 2px;
+    border-radius: 50%;
+    background-color: var(--primary-color);
+    opacity: 0.6;
+    display: inline-block;
+    animation: pulse 1.4s infinite ease-in-out;
+}
+
+.loading-dots .dots span:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.loading-dots .dots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.loading-dots .dots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes pulse {
+    0%, 80%, 100% {
+        transform: scale(0.6);
+        opacity: 0.4;
+    }
+    40% {
+        transform: scale(1);
+        opacity: 0.8;
+    }
+}
+
+/* System message animations */
+.message.system-message.success .message-content,
+.message.system-message.error .message-content {
+    animation: fadeIn 0.3s ease-out;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+}
+
+.message.system-message.success .message-content {
+    border-left: 2px solid rgba(70, 255, 120, 0.7);
+    background-color: rgba(70, 255, 120, 0.05);
+}
+
+.message.system-message.error .message-content {
+    border-left: 2px solid rgba(255, 70, 70, 0.7);
+    background-color: rgba(255, 70, 70, 0.05);
+}
+
+/* Add scroll indicator feature */
+.scroll-indicator {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background: var(--primary-color);
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-lg);
+    cursor: pointer;
+    opacity: 0;
+    transform: translateY(15px);
+    transition: opacity 0.3s, transform 0.3s;
+    z-index: 100;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.scroll-indicator.visible {
+    opacity: 0.9;
+    transform: translateY(0);
+}
+
+.scroll-indicator:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.4);
+}
+
+.scroll-indicator:active {
+    transform: scale(0.95);
+}
+
+.scroll-indicator.up {
+    bottom: 70px;
+}
+
+/* Make scroll indicators more visible when chat is in focus */
+#conversationContainer:focus ~ .scroll-indicator.visible {
+    opacity: 0.95;
+    box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.3);
+}
+
+/* Bottom button styling - enhanced for better visibility */
+.bottom-button {
+    width: 100%;
+    max-width: 300px;
+    margin: 8px auto 16px auto;
+    opacity: 0.9;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    background: transparent;
+    z-index: 100;
+}
+
+.bottom-button:hover {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.bottom-button .message-content {
+    background-color: var(--primary-color);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    border: none;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.bottom-button:hover .message-content {
+    box-shadow: var(--shadow-lg);
+}
+
+/* Expand/Collapse button styles */
+.expand-collapse-button {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 2px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: all 0.2s ease;
+    z-index: 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: var(--shadow-sm);
+}
+
+.expand-collapse-button:hover {
+    opacity: 1;
+    transform: translateX(-50%) translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+.expand-collapse-button .icon {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+}
+
+.expand-collapse-button.expand .icon::after {
+    content: "↓";
+}
+
+.expand-collapse-button.collapse .icon::after {
+    content: "↑";
+}
+
+/* Message checkpoints */
+.message-checkpoint {
+    width: 100%;
+    padding: 4px 8px;
+    background: rgba(0, 0, 0, 0.1);
+    border-left: 2px solid var(--primary-color);
+    margin: 8px 0;
+    font-size: 12px;
+    color: var(--subtle-text-color);
+    cursor: pointer;
+    border-radius: 0 4px 4px 0;
+    transition: all 0.2s ease;
+}
+
+.message-checkpoint:hover {
+    background: rgba(0, 122, 204, 0.1);
+    color: var(--foreground-color);
+}
+
+.message-checkpoint .checkpoint-label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.message-checkpoint .checkpoint-label::before {
+    content: "⚑";
+    opacity: 0.7;
+}
+
+/* Bottom message controls to show the expand functionality better */
+.message-content .expand-collapse-wrapper {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Action buttons for message interactions */
+.message-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    justify-content: flex-end;
+}
+
+.message:hover .message-actions {
+    opacity: 1;
+}
+
+.message-action-button {
+    background: transparent;
+    color: var(--foreground-color);
+    border: 1px solid rgba(100, 100, 100, 0.2);
+    border-radius: 4px;
+    padding: 4px 8px;
+    font-size: 11px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    transition: all 0.2s ease;
+    opacity: 0.7;
+}
+
+.message-action-button:hover {
+    background: rgba(0, 122, 204, 0.1);
+    border-color: rgba(0, 122, 204, 0.3);
+    opacity: 1;
+    transform: translateY(-1px);
+}
+
+.message-action-button.checkpoint-button {
+    border-color: rgba(0, 122, 204, 0.3);
+    color: var(--primary-color);
+}
+
+.message-action-button.checkpoint-button:hover {
+    background: rgba(0, 122, 204, 0.15);
+}
+
+.message-action-button .icon {
+    font-size: 12px;
+    line-height: 1;
+}
+
+/* User message container with actions */
+.user-message {
+    position: relative;
+}
+
+.user-message .message-content {
+    background: rgba(0, 122, 204, 0.04);
+    border-left: 2px solid var(--user-accent);
+}
+  

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Assistant</title>
+    <link rel="stylesheet" href="highlight.vs2015.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- API Key Input Container -->
+        <div id="apiKeyContainer">
+            <div class="logo-container">
+            </div>
+            <div class="api-key-setup">
+                <h2>Welcome to AI Assistant</h2>
+                <p>To get started, enter your Google Gemini API key below. You can get a key from <a href="https://makersuite.google.com/app/apikey" target="_blank">Google AI Studio</a>.</p>
+                <div class="input-group">
+                    <input type="password" id="apiKeyInput" placeholder="Enter your Gemini API key" />
+                    <button id="saveApiKeyBtn">Save</button>
+                </div>
+                <p><small>Your API key is stored securely in VS Code's secret storage and is only used to authenticate with the Gemini API.</small></p>
+            </div>
+        </div>
+        
+        <!-- Main Assistant Container -->
+        <div id="assistantContainer">
+            <div class="chat-header">
+
+                <div class="header-controls">
+                    <button id="newChatBtn" class="icon-button" title="New Conversation">
+                        <span class="icon"></span> New Chat
+                    </button>
+                    <button id="contextSettingsBtn" class="icon-button" title="Context Settings">
+                        <span class="icon"></span> Settings
+                    </button>
+                </div>
+            </div>
+            
+            <div class="action-toolbar">
+                <div class="action-buttons">
+                    <button class="action-button explain" data-action="explain">
+                        <span class="icon"></span> Explain Code
+                    </button>
+                    <button class="action-button optimize" data-action="optimize">
+                        <span class="icon"></span> Optimize Code
+                    </button>
+                    <button class="action-button document" data-action="document">
+                        <span class="icon"></span> Document Code
+                    </button>
+                    <button class="action-button test" data-action="test">
+                        <span class="icon"></span> Generate Tests
+                    </button>
+                </div>
+                
+                <div class="context-toggle">
+                    <label class="toggle-label">
+                        <input type="checkbox" id="includeProjectContext" checked />
+                        <span class="toggle-text">Include project context in queries</span>
+                    </label>
+                </div>
+            </div>
+            
+            <div id="conversationContainer">
+                <div class="message system-message">
+                    <div class="message-content">
+                        <p>Hello! I'm your AI coding assistant. Select some code and use the action buttons above, or ask me a question below.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="prompt-container">
+                <textarea id="promptInput" placeholder="Ask a question or send a prompt..." rows="1"></textarea>
+                <div class="prompt-actions">
+                    <button id="sendBtn" class="send-button">
+                        <span class="send-icon">➤</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="highlight.min.js"></script>
+    <script src="main.js"></script>
+</body>
+</html> 
