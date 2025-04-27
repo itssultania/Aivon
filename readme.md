@@ -3,10 +3,12 @@
 ##Smarter coding, seamless assistance - an intelligent, context-aware AI assistant that brings Google's Gemini models into your coding workflow via CLI and VS Code extension.
 
 
-![image](https://github.com/user-attachments/assets/bd797b7e-553e-4221-88b9-b8b2b1ca8887)
+![image](https://github.com/user-attachments/assets/995d74c9-4b64-43c2-a0a9-52f37e4a2d22)
 
 
-![image](https://github.com/user-attachments/assets/6c3287ca-3dc0-40e7-9624-443746f50284)
+
+![image](https://github.com/user-attachments/assets/0ebe31bd-70d1-477f-ba89-fc87aacfe015)
+
 
 
 ## Features
